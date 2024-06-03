@@ -14,15 +14,31 @@ const [data, setData] = useState({name:'',
 const valueInput = (e) => setData({...data, [e.target.name]: e.target.value});
 
 // Executar a função quando o usuário clicar no botão do formulário
-const addUser = (e) => {
+const addUser = async (e) => {
 
   //Bloquear o recarregamento da pagina
   e.preventDefault();
   console.log('Enviar para api');
   console.log(data.name)
   console.log(data.email);
-}
 
+
+const headers = {
+  'headers': {
+    //Indica que os dados serão enviados em formato de objeto
+    'Content-Type': 'application/json'
+  }
+};
+
+// Faz a requisição para o servidor com o axios, indicando o metodo, o endereço, e envia os dados do formulario e o cabeçalho
+await axios.post('http://localhost:8080/users', data, headers)
+  .then((response) => {
+    console.log(response.data.mensagem)
+  }).catch((err) => {
+    console.log(err.response.data.mensagem)
+});
+
+};
   return (
     <>
       <Head>
