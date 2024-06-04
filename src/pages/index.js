@@ -5,10 +5,14 @@ import axios from "axios";
 
 export default function Home() {
 
-// Declarar uma nova variavel com state e atribuir o objeto
-const [data, setData] = useState({name:'',
+// Declarar uma nova variavel dados com state e atribuir o objeto
+const [data, setData] = useState({
+  name:'',
   email:''
 });
+
+// Declarar a variavel para receber a mensagem
+const [message, setMessage] = useState("");
 
 // Receber os dados dos campos do formulario
 const valueInput = (e) => setData({...data, [e.target.name]: e.target.value});
@@ -18,9 +22,9 @@ const addUser = async (e) => {
 
   //Bloquear o recarregamento da pagina
   e.preventDefault();
-  console.log('Enviar para api');
-  console.log(data.name)
-  console.log(data.email);
+  //console.log('Enviar para api');
+  //console.log(data.name)
+  //console.log(data.email);
 
 
 const headers = {
@@ -33,9 +37,23 @@ const headers = {
 // Faz a requisição para o servidor com o axios, indicando o metodo, o endereço, e envia os dados do formulario e o cabeçalho
 await axios.post('http://localhost:8080/users', data, headers)
   .then((response) => {
-    console.log(response.data.mensagem)
+    //console.log(response.data.mensagem)
+
+    //Atribuir a mensagem no state message
+    setMessage(response.data.mensagem);
+
+    // Limpar os dados do state e os dados dos campos do formulario
+    setData({
+      name: '',
+      email: ''
+    });
   }).catch((err) => {
-    console.log(err.response.data.mensagem)
+    //console.log(err.response.data.mensagem)
+    if(err.response) {
+      setMessage(err.response.data.mensagem)
+    } else {
+      setMessage("Erro: Tente novamente mais tarde ou entre em contato com o admin!")
+    }
 });
 
 };
@@ -49,6 +67,8 @@ await axios.post('http://localhost:8080/users', data, headers)
       </Head>
       <main>
         <h2>Cadastrar Usuário</h2>
+
+        {message ? <p>{message}</p> : ""}
 
         <form onSubmit={addUser}>
           <label>Nome: </label>
