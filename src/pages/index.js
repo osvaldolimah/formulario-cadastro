@@ -1,6 +1,10 @@
 import Head from "next/head";
 import { useState } from "react";
 import axios from "axios";
+import { ButtonStyled } from "@/styles/Button.style";
+import { MainStyled } from "@/styles/Main.style";
+import { TitleStyled } from "@/styles/Title.style";
+import { FormStyled } from "@/styles/Form.style";
 
 
 export default function Home() {
@@ -65,21 +69,22 @@ await axios.post('http://localhost:8080/users', data, headers)
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h2>Cadastrar Usuário</h2>
+
+      <MainStyled>
+        <TitleStyled>Cadastro</TitleStyled>
 
         {message ? <p>{message}</p> : ""}
 
-        <form onSubmit={addUser}>
-          <label>Nome: </label>
+        <FormStyled onSubmit={addUser}>
+          <label>Seu nome: </label>
           <input type="text" name="name" placeholder="Digite seu nome" onChange={valueInput} value={data.name} />
 
-          <label>E-mail: </label>
+          <label>Seu e-mail: </label>
           <input type="email" name="email" placeholder="Digite seu e-mail" onChange={valueInput} value={data.email} />
 
-          <button type="submit">Enviar</button>
-        </form>
-      </main>
+          <ButtonStyled type="submit">Enviar</ButtonStyled>
+        </FormStyled>
+      </MainStyled>
     </>
   );
 }
